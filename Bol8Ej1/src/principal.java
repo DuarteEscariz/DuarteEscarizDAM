@@ -45,10 +45,20 @@ public class principal {
         String ruta;
         String nombre="";
         boolean flag;
+        boolean flag2=false;
         System.out.println("Introduce la ruta");
-        ruta=sc.nextLine();
-        File ru=new File(ruta);
-        if(ru.isDirectory()){
+        do {
+            ruta=sc.nextLine();  
+            File ru=new File(ruta);
+            if(ru.exists()){
+                flag2=false;
+            }else{
+                System.out.println("Introduce una ruta valida");
+                flag2=true;
+            }
+        } while (flag2);
+        File ru2=new File(ruta);
+        if(ru2.isDirectory()){
             System.out.println("Introduce el nombre del directorio");
             nombre=sc.nextLine();
             File dir=new File(ruta+"/"+nombre);
