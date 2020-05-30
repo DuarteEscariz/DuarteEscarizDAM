@@ -34,7 +34,8 @@ public class FrameEj3 extends JFrame implements ActionListener  {
             boton=new JButton("Selecciona Fichero");
             boton.addActionListener(this);
             add(boton);
-            texto=new JTextArea(contenido);
+            texto=new JTextArea();
+            texto.setSize(texto.getPreferredSize());
             add(texto);
             label1=new JLabel();
             add(label1);
@@ -59,26 +60,26 @@ public void actionPerformed(ActionEvent evento) {
     respuesta=fc.showOpenDialog(this);
     if(respuesta==JFileChooser.APPROVE_OPTION){
        String extension=selecciónDeExtension(fc.getSelectedFile());
-       if(extension==".txt"){
+       if(extension.equals(".txt")){
            try(Scanner f = new Scanner(fc.getSelectedFile())) {
                while(f.hasNext()){
-                   contenido=contenido+f.nextLine();
+                   contenido=f.nextLine();
+                   texto.append(contenido+"\n");
                }
 
            } catch (Exception e) {
             System.err.println("Error de acceso al archivo");
            }
        }else{
-           if(extension==".jpg"||extension==".jpeg"||extension==".png"||extension==".gif"){
+           if(extension.equals(".jpg")||extension.equals(".jpeg")||extension.equals(".png")||extension.equals(".gif")){
             label1.setIcon(new ImageIcon(fc.getSelectedFile().getPath()));
             label1.setSize(label1.getPreferredSize());
            }else{
-               label1.setText(extension);
+               label1.setText("Nombre: "+fc.getSelectedFile().getName());
                label2.setText("Path: "+fc.getSelectedFile().getPath());
                label3.setText("Tamaño: "+(fc.getSelectedFile().length()/1024)+"Kb");
-               String permEscri= fc.getSelectedFile().canWrite() ? "Tienes" : "No tienes";
-               String permLect= fc.getSelectedFile().canRead() ? "tienes" : "no tienes";
-               label4.setText(permEscri+" permisos de escritura y "+permLect+" permisos de lectura");
+               label4.setText(String.format
+               ("%s permisos de escritura y %s permisos de lectura", fc.getSelectedFile().canWrite() ? "Tienes" : "No tienes", fc.getSelectedFile().canRead() ? "tienes" : "mo tienes"));
            }
        }
     }
